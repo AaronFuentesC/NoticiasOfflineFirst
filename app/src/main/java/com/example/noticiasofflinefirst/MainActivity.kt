@@ -19,8 +19,6 @@ import com.example.noticiasofflinefirst.ui.theme.NoticiasOfflineFirstTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-// No hacer esto nunca en producción!
-// Usa BuildConfig o variables de entorno
         val apiKey = BuildConfig.NEWS_API_KEY
         setContent {
             NoticiasOfflineFirstTheme {

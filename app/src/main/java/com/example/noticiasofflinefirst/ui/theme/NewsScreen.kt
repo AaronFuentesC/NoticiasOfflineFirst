@@ -21,6 +21,11 @@ import coil.request.ImageRequest
 import com.example.noticiasofflinefirst.ui.EstadoNoticias
 import com.example.noticiasofflinefirst.ui.NewsViewModel
 import androidx.compose.runtime.getValue
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(viewModel: NewsViewModel, apiKey: String) {
@@ -70,13 +75,22 @@ fun NewsScreen(viewModel: NewsViewModel, apiKey: String) {
 }
 @Composable
 fun NoticiaItem(noticia: com.example.noticiasofflinefirst.model.Noticia) {
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(noticia.url)
+                )
+                context.startActivity(intent)
+            }
             .padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-// Imagen
+        // Imagen
         if (!noticia.urlToImage.isNullOrBlank()) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -88,7 +102,8 @@ fun NoticiaItem(noticia: com.example.noticiasofflinefirst.model.Noticia) {
                 contentScale = ContentScale.Crop
             )
         }
-// Texto
+
+        // Texto
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = noticia.title,
