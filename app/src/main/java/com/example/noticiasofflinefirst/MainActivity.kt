@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 // No hacer esto nunca en producción!
 // Usa BuildConfig o variables de entorno
-        val apiKey = "fd039767470f4a41bf8afafb1687c2bb"
+        val apiKey = BuildConfig.NEWS_API_KEY
         setContent {
             NoticiasOfflineFirstTheme {
                 val viewModel: NewsViewModel = viewModel()
