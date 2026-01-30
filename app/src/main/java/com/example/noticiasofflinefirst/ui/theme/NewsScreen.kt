@@ -19,22 +19,34 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.noticiasofflinefirst.ui.EstadoNoticias
-import com.example.noticiasofflinefirst.ui.NewsViewModel
 import androidx.compose.runtime.getValue
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.collectAsState
+import com.example.noticiasofflinefirst.ui.NewsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsScreen(viewModel: NewsViewModel, apiKey: String) {
-    val estado by viewModel.estado.collectAsStateWithLifecycle()
+fun NewsScreen(viewModel: NewsViewModel,
+               apiKey: String,
+               onOpenConfig: () -> Unit) {
+    val estado by viewModel.estado.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.cargarNoticias(apiKey)
     }
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Noticias Tech") }) },
+        topBar = { TopAppBar(
+            title = { Text("Noticias Tech") },
+            actions = {
+                IconButton(onClick = onOpenConfig) {
+                    Icon(Icons.Default.Settings, contentDescription = "Configuración")
+                }
+            }
+        )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.cargarNoticias(apiKey) }) {
                 Icon(Icons.Default.Refresh, "Refrescar")
@@ -42,6 +54,8 @@ fun NewsScreen(viewModel: NewsViewModel, apiKey: String) {
         }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
+
+
             when (val currentEstado = estado) { // Capture the state in a local variable
                 is EstadoNoticias.Cargando -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
